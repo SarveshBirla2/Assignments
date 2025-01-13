@@ -1,4 +1,5 @@
-package Employee.assignment;
+package employee.assignment;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 enum Designation{
@@ -8,9 +9,9 @@ enum Designation{
     
 }
 
-abstract class Employee{
+public abstract class Employee{
 
-    int id ;
+    public int id ;
     String name;
     int age ;
     int salary;
@@ -19,9 +20,9 @@ abstract class Employee{
 
 
 
-    static int countEmp=0 ;
+    public static int countEmp=0 ;
    
-    Employee(int EmployeeId,int salary,Designation designation){
+    public Employee(int EmployeeId,int salary,Designation designation){
        this.getDetails();
        this.id = EmployeeId;
        this.salary=salary;
@@ -31,13 +32,15 @@ abstract class Employee{
 
 
     final public void display()
-    {
+    { 
+      System.out.println("-------------------------------------------");
       System.out.println("Name : "+name);
       System.out.println("EmployeeID : "+id);
       System.out.println("Age : "+ age);
       System.out.println("Salary : "+salary);
       System.out.println("Designation : "+designation);
       System.out.println();
+      System.out.println("-------------------------------------------");
      }
 
 
@@ -45,42 +48,37 @@ abstract class Employee{
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter Name : ");
         this.name=sc.nextLine();
-        System.out.print("Enter Age : ");
-        this.age=sc.nextInt();
+        while(true){
+            try{
+                System.out.print("Enter Age : ");
+                this.age=sc.nextInt();
+                if(age<21 || age>60)throw new CheckAge();
+                break;
+                }
+                catch(CheckAge e){
+                    System.out.println("-------------------------------------------");
+                    System.out.println("Enter the Age between 21-60 only ");
+                    System.out.println("-------------------------------------------");
+                    sc.nextLine();
+                }
+                catch(InputMismatchException e){
+                         System.out.println("-------------------------------------------");
+                         System.out.println("Enter the Age in Integer Only !!");
+                         System.out.println("-------------------------------------------");
+                }
+
+        }
+        
+
     }
 
     public abstract void raiseSalary();
 }
 
-final class Clerk extends Employee{
-   
-    Clerk(int EmployeeID){
-        super(EmployeeID,20000,Designation.CLERK);
-    }
-   public void raiseSalary(){
-    salary += 2000;
-   };
-}
 
-final class Programmer extends Employee{
-   
-    Programmer(int EmployeeID){
-        super(EmployeeID,30000,Designation.PROGRAMMER);
-    }
-   public void raiseSalary(){
-    salary += 5000;
-   };
-}
 
-final class Manager extends Employee{
-   
-    Manager(int EmployeeID){
-        super(EmployeeID,100000,Designation.MANAGER);
-    }
-   public void raiseSalary(){
-    salary += 15000;
-   };
-}
+
+
 
 
 

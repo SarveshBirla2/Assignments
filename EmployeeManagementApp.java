@@ -1,6 +1,10 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
-import Employee.assignment.*;
-
+import employee.assignment.Employee;
+import employee.assignment.Clerk;
+import employee.assignment.Manager;
+import employee.assignment.Programmer;
+import employee.assignment.InvalidChoiceException;
 
 public class EmployeeManagementApp
 {
@@ -10,42 +14,112 @@ public class EmployeeManagementApp
         
         Scanner sc = new Scanner(System.in);
         Employee emp[] = new Employee[100];
-        do{
-            System.out.println("-------------------------------------");
-            System.out.println("1. Create Employee");
-            System.out.println("2. Display");
-            System.out.println("3. Raise Salary");
-            System.out.println("4. Remove ");
-            System.out.println("5. Exit");
-            System.out.println("-------------------------------------");
-            System.out.print("Enter your choice: ");
-            ch1 = sc.nextInt();
+        do{    
+            while(true){
+                try{ 
+                    System.out.println("-------------------------------------");
+                    System.out.println("1. Create Employee");
+                    System.out.println("2. Display");
+                    System.out.println("3. Raise Salary");
+                    System.out.println("4. Remove ");
+                    System.out.println("5. Exit");
+                    System.out.println("-------------------------------------");
+                    System.out.print("Enter your choice: ");
+                    
+                    ch1 = sc.nextInt();
+                    if(ch1<1 || ch1 > 5 )throw new InvalidChoiceException("Enter the Valid Choice between 1 to 5 !!");
+                    else break;
+                }
+                catch(InputMismatchException e){
+                    System.out.println("-------------------------------------------");
+                    System.out.println("Enter the Correct Choice in Integer Only !!");
+                    System.out.println("-------------------------------------------");
+                    sc.nextLine();
+                }
+                catch(InvalidChoiceException e){
+                    System.out.println("-------------------------------------------");
+                   // System.out.println("Enter the Valid Choice between 1 to 5 !!");
+                     System.out.println(e.getMessage()) ;
+                    System.out.println("-------------------------------------------");
+                    sc.nextLine();
+                }
+
+            }
+            
+           
+            
+            
             switch(ch1)
             {
                 case 1:
 
                 do
-                {
-                    System.out.println("---------------------------------------------");
-                    System.out.println("1. Create Clerk");
-                    System.out.println("2. Create Programmer");
-                    System.out.println("3. Create Manager");
-                    System.out.println("4. Back");
-                    System.out.println("--------------------------------------------");
-                    System.out.print("Enter your choice: ");
-                    ch2 = sc.nextInt();
+                {   
+                    while(true){
+                        try{
+                            System.out.println("---------------------------------------------");
+                            System.out.println("1. Create Clerk");
+                            System.out.println("2. Create Programmer");
+                            System.out.println("3. Create Manager");
+                            System.out.println("4. Back");
+                            System.out.println("--------------------------------------------");
+                            System.out.print("Enter your choice: ");
+                            ch2 = sc.nextInt();
+    
+                            if(ch2<1 || ch2 > 4 )throw new InvalidChoiceException("Enter the Valid Choice between 1 to 4 !! ");
+                            else break;
+                        }
+                        catch(InputMismatchException e){
+                            System.out.println("-------------------------------------------");
+                            System.out.println("Enter the Correct Choice in Integer Only !!");
+                            System.out.println("-------------------------------------------");
+                            sc.nextLine();
+                        }
+                        catch(InvalidChoiceException e){
+                            System.out.println("-------------------------------------------");
+                            // System.out.println("Enter the Valid Choice between 1 to 5 !!");
+                            System.out.println(e.getMessage());
+                            System.out.println("-------------------------------------------");
+                            sc.nextLine();
+                        }
+                    }
+                    
+                 
 
 
 
                     int EmployeeID=-1;
                     if(ch2!=4){
                         while(EmployeeID==-1){
-
-                        System.out.print(" Enter the EmployeeId :");
-                        EmployeeID=sc.nextInt();
+                       
+                       while(true){    
+                         try{
+                            
+                                System.out.print(" Enter the EmployeeId :");
+                                EmployeeID=sc.nextInt();
+                                if(EmployeeID<=0) throw new InvalidChoiceException("Enter Valid Employee ID greater than 0 ");
+                                else break;
+                           }
+                        catch(InputMismatchException e){
+                            System.out.println("-------------------------------------------");
+                            System.out.println("Enter the Correct EmployeeID in Integer Only !!");
+                            System.out.println("-------------------------------------------");
+                            sc.nextLine();
+                        }
+                        catch(InvalidChoiceException e){
+                            System.out.println("-------------------------------------------");
+                            System.out.println(e.getMessage());
+                            System.out.println("-------------------------------------------");
+                            sc.nextLine();
+                        }
+                       }   
+                       
+                       
                         for(int i=0;i<Employee.countEmp;i++){
                            if(emp[i].id==EmployeeID){
+                            System.out.println("-------------------------------------------");
                             System.out.println(" Employee ID Already exist, enter a different Employee ID");
+                            System.out.println("-------------------------------------------");
                             EmployeeID=-1;
                             break;
                            }
@@ -84,15 +158,18 @@ public class EmployeeManagementApp
                 break;
 
                 case 4:
+                System.out.println("-------------------------------------------");
                 System.out.println("Do you really want to delete");
                 System.out.println("1.Yes    2.No");
+                System.out.println("-------------------------------------------");
+
                 int ch3=sc.nextInt();
                   switch (ch3) {
                     case 1 :
-                        System.out.println("Enter The ID of Employee to be deleted");
+                        System.out.print("Enter The ID of Employee to be deleted  :");
                         int  idToDelete = sc.nextInt();
                         boolean found=false;
-                        for(int i=0;i<Employee.countEmp;i++){
+                        for(int i=0;i< Employee.countEmp;i++){
                             if(emp[i].id==idToDelete){
                                found=true;
                                emp[i]=null;
