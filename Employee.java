@@ -1,7 +1,8 @@
 package employee.assignment;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
+import employee.assignment.utils.takeInput;
+import employee.assignment.EmployeeReader;
 enum Designation{
     CLERK,
     PROGRAMMER,
@@ -30,7 +31,7 @@ public abstract class Employee{
        countEmp++;
     }
 
-
+     
     final public void display()
     { 
       System.out.println("-------------------------------------------");
@@ -45,31 +46,8 @@ public abstract class Employee{
 
 
     void getDetails(){
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter Name : ");
-        this.name=sc.nextLine();
-        while(true){
-            try{
-                System.out.print("Enter Age : ");
-                this.age=sc.nextInt();
-                if(age<21 || age>60)throw new CheckAge();
-                break;
-                }
-                catch(CheckAge e){
-                    System.out.println("-------------------------------------------");
-                    System.out.println("Enter the Age between 21-60 only ");
-                    System.out.println("-------------------------------------------");
-                    sc.nextLine();
-                }
-                catch(InputMismatchException e){
-                         System.out.println("-------------------------------------------");
-                         System.out.println("Enter the Age in Integer Only !!");
-                         System.out.println("-------------------------------------------");
-                }
-
-        }
-        
-
+         name = EmployeeReader.NameReader();
+         age=EmployeeReader.AgeReader(21, 60);   
     }
 
     public abstract void raiseSalary();

@@ -4,6 +4,7 @@ import employee.assignment.Employee;
 import employee.assignment.Clerk;
 import employee.assignment.Manager;
 import employee.assignment.Programmer;
+import employee.assignment.utils.Menu;
 import employee.assignment.InvalidChoiceException;
 
 public class EmployeeManagementApp
@@ -15,79 +16,22 @@ public class EmployeeManagementApp
         Scanner sc = new Scanner(System.in);
         Employee emp[] = new Employee[100];
         do{    
-            while(true){
-                try{ 
-                    System.out.println("-------------------------------------");
-                    System.out.println("1. Create Employee");
-                    System.out.println("2. Display");
-                    System.out.println("3. Raise Salary");
-                    System.out.println("4. Remove ");
-                    System.out.println("5. Exit");
-                    System.out.println("-------------------------------------");
-                    System.out.print("Enter your choice: ");
-                    
-                    ch1 = sc.nextInt();
-                    if(ch1<1 || ch1 > 5 )throw new InvalidChoiceException("Enter the Valid Choice between 1 to 5 !!");
-                    else break;
-                }
-                catch(InputMismatchException e){
-                    System.out.println("-------------------------------------------");
-                    System.out.println("Enter the Correct Choice in Integer Only !!");
-                    System.out.println("-------------------------------------------");
-                    sc.nextLine();
-                }
-                catch(InvalidChoiceException e){
-                    System.out.println("-------------------------------------------");
-                   // System.out.println("Enter the Valid Choice between 1 to 5 !!");
-                     System.out.println(e.getMessage()) ;
-                    System.out.println("-------------------------------------------");
-                    sc.nextLine();
-                }
-
-            }
             
-           
+                
+                String menu = "1. Create Employee\n2. Display\n3. Raise Salary\n4. Remove\n5. Exit\n" ;
             
-            
-            switch(ch1)
+                ch1 = Menu.readChoice(5, menu);
+                
+             switch(ch1)
             {
                 case 1:
 
                 do
                 {   
-                    while(true){
-                        try{
-                            System.out.println("---------------------------------------------");
-                            System.out.println("1. Create Clerk");
-                            System.out.println("2. Create Programmer");
-                            System.out.println("3. Create Manager");
-                            System.out.println("4. Back");
-                            System.out.println("--------------------------------------------");
-                            System.out.print("Enter your choice: ");
-                            ch2 = sc.nextInt();
-    
-                            if(ch2<1 || ch2 > 4 )throw new InvalidChoiceException("Enter the Valid Choice between 1 to 4 !! ");
-                            else break;
-                        }
-                        catch(InputMismatchException e){
-                            System.out.println("-------------------------------------------");
-                            System.out.println("Enter the Correct Choice in Integer Only !!");
-                            System.out.println("-------------------------------------------");
-                            sc.nextLine();
-                        }
-                        catch(InvalidChoiceException e){
-                            System.out.println("-------------------------------------------");
-                            // System.out.println("Enter the Valid Choice between 1 to 5 !!");
-                            System.out.println(e.getMessage());
-                            System.out.println("-------------------------------------------");
-                            sc.nextLine();
-                        }
-                    }
+
+                    String submenu = "1. Create Clerk\n2. Create Programmer\n3. Create Manager\n4. Back "; 
+                    ch2 = Menu.readChoice(4,submenu);
                     
-                 
-
-
-
                     int EmployeeID=-1;
                     if(ch2!=4){
                         while(EmployeeID==-1){
@@ -137,7 +81,7 @@ public class EmployeeManagementApp
                         emp[Employee.countEmp] = new Manager(EmployeeID);
                         break;
                     }
-                }while(ch2 != 4);
+                } while(ch2 != 4);
 
                 case 2:
                 if (Employee.countEmp == 0){
@@ -160,10 +104,9 @@ public class EmployeeManagementApp
                 case 4:
                 System.out.println("-------------------------------------------");
                 System.out.println("Do you really want to delete");
-                System.out.println("1.Yes    2.No");
-                System.out.println("-------------------------------------------");
-
-                int ch3=sc.nextInt();
+                int ch3=0;
+                String submenu="1.Yes\n2.No";
+                ch3=Menu.readChoice(ch3, submenu);
                   switch (ch3) {
                     case 1 :
                         System.out.print("Enter The ID of Employee to be deleted  :");
@@ -199,6 +142,7 @@ public class EmployeeManagementApp
                      System.out.println("Enter the valid choice !! ");
                         break;
                   }
+
                case 5:
                 break;
             }
@@ -206,8 +150,10 @@ public class EmployeeManagementApp
     
         System.out.println("Total Employees Present in the Company: " + Employee.countEmp);
 
-
+        
+        sc.close();
     }
+    
 
 }
 
