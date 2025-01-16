@@ -1,11 +1,9 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import employee.assignment.Employee;
-import employee.assignment.Clerk;
-import employee.assignment.Manager;
-import employee.assignment.Programmer;
 import employee.assignment.utils.Menu;
 import employee.assignment.InvalidChoiceException;
+import employee.assignment.Designation;
 
 public class EmployeeManagementApp
 {
@@ -15,6 +13,12 @@ public class EmployeeManagementApp
         
         Scanner sc = new Scanner(System.in);
         Employee emp[] = new Employee[100];
+        
+
+        System.out.println("Enter CEO Details : ");
+        System.out.println("--------------------------");
+        emp[Employee.countEmp]=Employee.getEmployee(1,Designation.CEO);
+
         do{    
             
                 
@@ -28,7 +32,7 @@ public class EmployeeManagementApp
 
                 do
                 {   
-
+                    
                     String submenu = "1. Create Clerk\n2. Create Programmer\n3. Create Manager\n4. Back "; 
                     ch2 = Menu.readChoice(4,submenu);
                     
@@ -72,13 +76,13 @@ public class EmployeeManagementApp
                     }
                     switch(ch2){
                         case 1:
-                        emp[Employee.countEmp] = new Clerk(EmployeeID);
+                        emp[Employee.countEmp] = Employee.getEmployee(EmployeeID,Designation.CLERK);
                         break;
                         case 2:
-                        emp[Employee.countEmp] = new Programmer(EmployeeID);
+                        emp[Employee.countEmp] = Employee.getEmployee(EmployeeID,Designation.PROGRAMMER);
                         break;
                         case 3:
-                        emp[Employee.countEmp] = new Manager(EmployeeID);
+                        emp[Employee.countEmp] = Employee.getEmployee(EmployeeID,Designation.MANAGER);
                         break;
                     }
                 } while(ch2 != 4);
@@ -106,11 +110,17 @@ public class EmployeeManagementApp
                 System.out.println("Do you really want to delete");
                 int ch3=0;
                 String submenu="1.Yes\n2.No";
-                ch3=Menu.readChoice(ch3, submenu);
+                ch3=Menu.readChoice(2, submenu);
                   switch (ch3) {
                     case 1 :
                         System.out.print("Enter The ID of Employee to be deleted  :");
                         int  idToDelete = sc.nextInt();
+                        if(idToDelete==1){
+                            System.out.println("-----------------------------");
+                            System.out.println("Cannot Delete CEO ");
+                            System.out.println("-----------------------------");
+                            break;
+                        }
                         boolean found=false;
                         for(int i=0;i< Employee.countEmp;i++){
                             if(emp[i].id==idToDelete){
@@ -149,6 +159,7 @@ public class EmployeeManagementApp
         }while(ch1 != 5);
     
         System.out.println("Total Employees Present in the Company: " + Employee.countEmp);
+         
 
         
         sc.close();

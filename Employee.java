@@ -1,14 +1,11 @@
 package employee.assignment;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import employee.assignment.utils.takeInput;
-import employee.assignment.EmployeeReader;
-enum Designation{
-    CLERK,
-    PROGRAMMER,
-    MANAGER
-    
-}
+import employee.assignment.Designation;
+import employee.assignment.Clerk;
+import employee.assignment.Programmer;
+
+
 
 public abstract class Employee{
 
@@ -49,6 +46,21 @@ public abstract class Employee{
     void getDetails(){
          name = EmployeeReader.NameReader();
          age=EmployeeReader.AgeReader(21, 60);   
+    }
+    
+
+    public static Employee getEmployee(int EmployeeID,Designation designation){
+        if(designation==Designation.CLERK){
+           return Clerk.getClerk(EmployeeID);
+        }
+        if(designation==Designation.MANAGER){
+           return Manager.getmManager(EmployeeID);
+        }
+        if(designation==Designation.PROGRAMMER){
+            return Programmer.getProgrammer(EmployeeID);
+        }
+
+            return CEO.getCEO(EmployeeID);
     }
 
     public abstract void raiseSalary();
