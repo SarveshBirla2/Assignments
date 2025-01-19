@@ -9,11 +9,11 @@ import employee.assignment.Programmer;
 
 public abstract class Employee{
 
-    public int id ;
-    String name;
-    int age ;
-    int salary;
-    Designation designation;
+    private int id ;
+    private String name;
+    private int age ;
+    private int salary;
+    private Designation designation;
     
 
 
@@ -64,6 +64,47 @@ public abstract class Employee{
     }
 
     public abstract void raiseSalary();
+
+    
+    public int getSalary(){
+        return salary;
+    }
+    public void setSalary(int salary){
+        this.salary = salary ;
+    }
+
+
+    public String getName(){
+        return name;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
+
+
+    public  int getAge(){
+        return salary;
+    }
+    public void setAge(int age){
+        this.age = age ;
+    }
+
+
+    public  Designation getDesignation(){
+        return this.designation;
+    }
+    public void setDesignation(Designation d){
+        this.designation = d ;
+    }
+    
+
+    public int getId(){
+        return id;
+    }
+    public void setID(int id){
+     this.id=id;
+    }
+    
 }
 
 

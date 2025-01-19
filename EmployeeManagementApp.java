@@ -64,7 +64,7 @@ public class EmployeeManagementApp
                        
                        
                         for(int i=0;i<Employee.countEmp;i++){
-                           if(emp[i].id==EmployeeID){
+                           if(emp[i].getId()==EmployeeID){
                             System.out.println("-------------------------------------------");
                             System.out.println(" Employee ID Already exist, enter a different Employee ID");
                             System.out.println("-------------------------------------------");
@@ -123,7 +123,7 @@ public class EmployeeManagementApp
                         }
                         boolean found=false;
                         for(int i=0;i< Employee.countEmp;i++){
-                            if(emp[i].id==idToDelete){
+                            if(emp[i].getId()==idToDelete){
                                found=true;
                                emp[i]=null;
                              

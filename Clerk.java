@@ -5,7 +5,7 @@ public final class Clerk extends Employee{
         super(EmployeeID,20000,Designation.CLERK);
     }
    public void raiseSalary(){
-    salary += 2000;
+    this.setSalary(this.getSalary()+2000);
    };
     
    public static Clerk getClerk(int EmployeeID){

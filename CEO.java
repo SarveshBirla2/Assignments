@@ -5,7 +5,7 @@ public final class CEO extends Employee{
         super(EmployeeID,200000,Designation.CEO);
     }
    public void raiseSalary(){
-    salary += 30000;
+    this.setSalary(this.getSalary()+30000);
    };
    public static Employee getCEO(int EmployeeID){
       if(c1==null){
