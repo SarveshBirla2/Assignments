@@ -2,6 +2,7 @@ package employee.assignment;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import employee.assignment.Designation;
+import employee.assignment.EmployeeMap;
 import employee.assignment.Clerk;
 import employee.assignment.Programmer;
 
@@ -18,14 +19,14 @@ public abstract class Employee{
 
 
 
-    public static int countEmp=0 ;
+    //public static int countEmp=0 ;
    
     public Employee(int EmployeeId,int salary,Designation designation){
        this.getDetails();
        this.id = EmployeeId;
        this.salary=salary;
        this.designation=designation;
-       countEmp++;
+       EmployeeMap.empCount++;
     }
 
      

@@ -1,5 +1,9 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.Iterator;
+import java.util.Map;
+
+import employee.assignment.EmployeeMap;
 import employee.assignment.Employee;
 import employee.assignment.utils.Menu;
 import employee.assignment.InvalidChoiceException;
@@ -12,19 +16,19 @@ public class EmployeeManagementApp
         int ch1 = 0, ch2 = 0;
         
         Scanner sc = new Scanner(System.in);
-        Employee emp[] = new Employee[100];
+       // Employee emp[] = new Employee[100];
         
 
         System.out.println("Enter CEO Details : ");
         System.out.println("--------------------------");
-        emp[Employee.countEmp]=Employee.getEmployee(1,Designation.CEO);
+        EmployeeMap.Employees.put(1,Employee.getEmployee(1,Designation.CEO));
 
         do{    
             
                 
-                String menu = "1. Create Employee\n2. Display\n3. Raise Salary\n4. Remove\n5. Exit\n" ;
+                String menu = "1. Create Employee\n2. Display\n3. Raise Salary\n4. Remove\n5. Search\n6.Exit" ;
             
-                ch1 = Menu.readChoice(5, menu);
+                ch1 = Menu.readChoice(6, menu);
                 
              switch(ch1)
             {
@@ -62,46 +66,59 @@ public class EmployeeManagementApp
                         }
                        }   
                        
-                       
-                        for(int i=0;i<Employee.countEmp;i++){
-                           if(emp[i].getId()==EmployeeID){
+                        if(EmployeeMap.Employees.containsKey(EmployeeID)){
                             System.out.println("-------------------------------------------");
                             System.out.println(" Employee ID Already exist, enter a different Employee ID");
                             System.out.println("-------------------------------------------");
                             EmployeeID=-1;
-                            break;
-                           }
                         }
+
+                        // for(int i=0;i<Employee.countEmp;i++){
+                        //    if(emp[i].getId()==EmployeeID){
+                        //     System.out.println("-------------------------------------------");
+                        //     System.out.println(" Employee ID Already exist, enter a different Employee ID");
+                        //     System.out.println("-------------------------------------------");
+                        //     EmployeeID=-1;
+                        //     break;
+                        //    }
+                        // }
                     }
                     }
                     switch(ch2){
                         case 1:
-                        emp[Employee.countEmp] = Employee.getEmployee(EmployeeID,Designation.CLERK);
+                        EmployeeMap.Employees.put(EmployeeID,Employee.getEmployee(EmployeeID,Designation.CLERK));
                         break;
                         case 2:
-                        emp[Employee.countEmp] = Employee.getEmployee(EmployeeID,Designation.PROGRAMMER);
+                        EmployeeMap.Employees.put(EmployeeID,Employee.getEmployee(EmployeeID,Designation.PROGRAMMER));
                         break;
                         case 3:
-                        emp[Employee.countEmp] = Employee.getEmployee(EmployeeID,Designation.MANAGER);
+                        EmployeeMap.Employees.put(EmployeeID,Employee.getEmployee(EmployeeID,Designation.MANAGER));
                         break;
                     }
                 } while(ch2 != 4);
 
                 case 2:
-                if (Employee.countEmp == 0){
+                if (EmployeeMap.empCount == 0){
                     System.out.println("No Employee Present to Display");
                 }
-                for (int i = 0; i < Employee.countEmp; i++){
-                emp[i].display();
+                Iterator mi = EmployeeMap.Employees.entrySet().iterator();
+
+                while(mi.hasNext()){
+                    Map.Entry me = (Map.Entry)mi.next();
+                    Employee emp=(Employee)me.getValue();
+                    emp.display();  
                 }
                 break;
 
                 case 3:
-                if (Employee.countEmp == 0){
+                if (EmployeeMap.empCount == 0){
                     System.out.println("No Employee Present to Raise Salary");
                 }
-                for (int i = 0; i < Employee.countEmp; i++){
-                   emp[i].raiseSalary();
+                Iterator mi2 = EmployeeMap.Employees.entrySet().iterator();
+                while(mi2.hasNext()){
+                    Map.Entry me = (Map.Entry)mi2.next();
+                    Employee emp=(Employee)me.getValue();
+                    emp.raiseSalary();  
                 }
                 break;
 
@@ -121,30 +138,45 @@ public class EmployeeManagementApp
                             System.out.println("-----------------------------");
                             break;
                         }
-                        boolean found=false;
-                        for(int i=0;i< Employee.countEmp;i++){
-                            if(emp[i].getId()==idToDelete){
-                               found=true;
-                               emp[i]=null;
-                             
-                               continue;
-                            }
-                            if(found==true){
-                                emp[i-1]=emp[i];
-                            }
+
+                        if(EmployeeMap.Employees.containsKey(idToDelete)){
+
+                            EmployeeMap.empCount--;
+                            Employee emp=(Employee)EmployeeMap.Employees.remove(idToDelete);
+                            System.out.println("----------------------------------");
+                            System.out.println("Deleted Employee :");
+                            emp.display();
+                            System.out.println("----------------------------------"); 
                         }
-                        if(found==false ){
+                        else{
                         System.out.println("----------------------------------");
                         System.out.println("Employee ID not found");
                         System.out.println("----------------------------------");
-                         }
-                        else {
-                            Employee.countEmp--;
-                            System.out.println("----------------------------------");
-                            System.out.println("Deleted");
-                            System.out.println("----------------------------------"); 
                         }
-                        break;
+                        // boolean found=false;
+                        // for(int i=0;i<;i++){
+                        //     if(emp[i].getId()==idToDelete){
+                        //        found=true;
+                        //        emp[i]=null;
+                             
+                        //        continue;
+                        //     }
+                        //     if(found==true){
+                        //         emp[i-1]=emp[i];
+                        //     }
+                        // }
+                        // if(found==false ){
+                        // System.out.println("----------------------------------");
+                        // System.out.println("Employee ID not found");
+                        // System.out.println("----------------------------------");
+                        //  }
+                        // else {
+                        //     Employee.countEmp--;
+                        //     System.out.println("----------------------------------");
+                        //     System.out.println("Deleted");
+                        //     System.out.println("----------------------------------"); 
+                        // }
+                        // break;
                     case 2 :
 
                        break;
@@ -152,13 +184,24 @@ public class EmployeeManagementApp
                      System.out.println("Enter the valid choice !! ");
                         break;
                   }
-
                case 5:
+                System.out.print("Enter the Employee ID to search ");
+                int idToSearch = sc.nextInt();
+                if(EmployeeMap.Employees.containsKey(idToSearch)){
+                    Employee emp=(Employee)EmployeeMap.Employees.get(idToSearch);
+                    emp.display();
+                }
+                else{
+                  System.out.println("----------------------------------");
+                  System.out.println("Employee ID not found");
+                  System.out.println("----------------------------------");
+                }
+               case 6:
                 break;
             }
-        }while(ch1 != 5);
+        }while(ch1 != 6);
     
-        System.out.println("Total Employees Present in the Company: " + Employee.countEmp);
+        System.out.println("Total Employees Present in the Company: " + EmployeeMap.empCount);
          
 
         

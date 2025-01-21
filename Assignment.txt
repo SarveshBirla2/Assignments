@@ -1,0 +1,21 @@
+- No Employee IDs can be same 
+- Use collection classes 
+
+
+1.Create
+2.Display
+3.Raise Salary
+4.Remove
+5.Search
+6.Exit
+
+---------------------------
+Enter Employee ID :25
+Name 
+Age 
+Salary 
+Designation
+
+------------------------------
+
+

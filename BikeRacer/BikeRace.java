@@ -6,6 +6,22 @@ public class BikeRace{
     static int flag=0;
    public static void main(String[] args) {
 
+    
+
+      
+    Thread threadArray[] =new Thread[10];
+    Racer racers[]=new Racer[10];
+    ThreadGroup tg = new ThreadGroup("tg");
+    for(int i=0;i<10;i++){
+             Racer racer = new Racer();
+             racers[i]=racer;
+            racer.setName("Thread-" + i); // Set racer name
+            threadArray[i] = new Thread(tg,racer);
+    }
+   
+    for(int i=0;i<10;i++){
+      threadArray[i].start();
+   }
 
     Scanner sc = new Scanner(System.in);
     while(true){
@@ -14,6 +30,17 @@ public class BikeRace{
     String s = sc.nextLine();
     String temp = "Start";
     if(s.equalsIgnoreCase(temp)){
+
+      Thread countdown = new Thread(new Countdown());
+      countdown.start(); 
+      try{
+        countdown.join();
+     }
+     catch(Exception e){
+        System.out.println(e);
+     }
+
+        Racer.startRace();
         break;
     }
     }
@@ -24,34 +51,7 @@ public class BikeRace{
     }
 
     
-    Thread countdown = new Thread(new Countdown());
-    countdown.start();
-
-    try{
-        countdown.join();
-     }
-     catch(Exception e){
-        System.out.println(e);
-     }
-
-    Thread threadArray[] =new Thread[10];
-    Racer racers[]=new Racer[10];
-    ThreadGroup tg = new ThreadGroup("tg");
-    for(int i=0;i<10;i++){
-             Racer racer = new Racer();
-             racers[i]=racer;
-            racer.setName("Thread-" + i); // Set racer name
-            threadArray[i] = new Thread(tg,racer);
-    }
-     
-    
-    for(int i=0;i<10;i++){
-        threadArray[i].start();
-    }
-    
-
    while(tg.activeCount()!=0){
-
    }
 
    sortRacer.sortRacersByTime(racers);
@@ -59,8 +59,6 @@ public class BikeRace{
    for(int i=0;i<10;i++){
       racers[i].display(i+1);
    }
-    
-
 
    }
 }

@@ -8,6 +8,7 @@ public class Racer extends Thread {
     private long endTime ;
     private int speed = 0 ;
     private int distance = 0;
+    private static Object lock = new Object();
 
     public String getRacerName(){
       return racerName;
@@ -46,8 +47,29 @@ public class Racer extends Thread {
    public void display(int rank){
     System.out.println("  "+ rank+ "   |    "+this.getName()+"   |     "+this.startTime+"    |   "+this.endTime+"    |    "+(this.endTime-this.startTime) );
    }
+
+
+   public static void startRace(){
+      synchronized(lock){
+         lock.notifyAll();
+      }
+     
+   }
+
     public void run(){
-       this.startTime = System.currentTimeMillis();
+
+      System.out.println(this.getName() + " is ready. ");
+       synchronized(lock){
+
+         try{
+            lock.wait();
+         }
+         catch(Exception e){
+            System.out.println(e);
+         }
+         
+       }
+             this.startTime = System.currentTimeMillis();
        System.out.println(this.getName() + " started Running ");
        int mark=20;
        
