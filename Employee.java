@@ -27,8 +27,18 @@ public abstract class Employee{
        this.salary=salary;
        this.designation=designation;
        EmployeeMap.empCount++;
+       EmployeeMap.Employees.put(id,this);
     }
-
+    
+    public Employee(int EmployeeID,int salary,Designation designation ,int age , String name){
+        this.id = EmployeeID;
+        this.salary=salary;
+        this.age = age ;
+        this.designation = designation ;
+        this.name =name;
+        EmployeeMap.empCount++;
+        EmployeeMap.Employees.put(id,this);
+    }
      
     final public void display()
     { 
@@ -49,6 +59,10 @@ public abstract class Employee{
          age=EmployeeReader.AgeReader(21, 60);   
     }
     
+
+    public String toString(){
+       return id+","+salary+","+designation+","+age+","+name+"\n";
+    }
 
     public static Employee getEmployee(int EmployeeID,Designation designation){
         if(designation==Designation.CLERK){

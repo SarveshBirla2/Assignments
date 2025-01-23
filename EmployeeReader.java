@@ -37,6 +37,50 @@ public class EmployeeReader {
       }
 
 
+
+
+
+      public static int EmployeeIdReader(){
+             int EmployeeID=-1;
+        Scanner sc = new Scanner(System.in);
+            while(EmployeeID==-1){
+           
+           while(true){    
+             try{
+                
+                    System.out.print(" Enter the EmployeeId :");
+                    EmployeeID=sc.nextInt();
+                    if(EmployeeID<=0) throw new InvalidChoiceException("Enter Valid Employee ID greater than 0 ");
+                    else break;
+               }
+            catch(InputMismatchException e){
+                System.out.println("-------------------------------------------");
+                System.out.println("Enter the Correct EmployeeID in Integer Only !!");
+                System.out.println("-------------------------------------------");
+                sc.nextLine();
+            }
+            catch(InvalidChoiceException e){
+                System.out.println("-------------------------------------------");
+                System.out.println(e.getMessage());
+                System.out.println("-------------------------------------------");
+                sc.nextLine();
+            }
+           }   
+           
+            if(EmployeeMap.Employees.containsKey(EmployeeID)){
+                System.out.println("-------------------------------------------");
+                System.out.println(" Employee ID Already exist, enter a different Employee ID");
+                System.out.println("-------------------------------------------");
+                EmployeeID=-1;
+            }
+
+         
+        }
+        return EmployeeID ;
+    
+      }
+
+
 }
 
 class Input{

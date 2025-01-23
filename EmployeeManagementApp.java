@@ -4,24 +4,34 @@ import java.util.Iterator;
 import java.util.Map;
 
 import employee.assignment.EmployeeMap;
+import employee.assignment.EmployeeReader;
+import employee.assignment.FileOperations;
 import employee.assignment.Employee;
 import employee.assignment.utils.Menu;
 import employee.assignment.InvalidChoiceException;
 import employee.assignment.Designation;
+import employee.assignment.Display;
 
 public class EmployeeManagementApp
-{
+{    
+
+
         public static void main(String[] args)
    {
+    try{
         int ch1 = 0, ch2 = 0;
         
         Scanner sc = new Scanner(System.in);
        // Employee emp[] = new Employee[100];
         
+        FileOperations.readEmployees();
+        if(!EmployeeMap.isCeoPresent){
+            System.out.println("Enter CEO Details : ");
+            System.out.println("--------------------------");
+            EmployeeMap.Employees.put(1,Employee.getEmployee(1,Designation.CEO));
+            EmployeeMap.isCeoPresent =true;
+        }
 
-        System.out.println("Enter CEO Details : ");
-        System.out.println("--------------------------");
-        EmployeeMap.Employees.put(1,Employee.getEmployee(1,Designation.CEO));
 
         do{    
             
@@ -36,81 +46,36 @@ public class EmployeeManagementApp
 
                 do
                 {   
-                    
                     String submenu = "1. Create Clerk\n2. Create Programmer\n3. Create Manager\n4. Back "; 
                     ch2 = Menu.readChoice(4,submenu);
                     
                     int EmployeeID=-1;
                     if(ch2!=4){
-                        while(EmployeeID==-1){
-                       
-                       while(true){    
-                         try{
-                            
-                                System.out.print(" Enter the EmployeeId :");
-                                EmployeeID=sc.nextInt();
-                                if(EmployeeID<=0) throw new InvalidChoiceException("Enter Valid Employee ID greater than 0 ");
-                                else break;
-                           }
-                        catch(InputMismatchException e){
-                            System.out.println("-------------------------------------------");
-                            System.out.println("Enter the Correct EmployeeID in Integer Only !!");
-                            System.out.println("-------------------------------------------");
-                            sc.nextLine();
-                        }
-                        catch(InvalidChoiceException e){
-                            System.out.println("-------------------------------------------");
-                            System.out.println(e.getMessage());
-                            System.out.println("-------------------------------------------");
-                            sc.nextLine();
-                        }
-                       }   
-                       
-                        if(EmployeeMap.Employees.containsKey(EmployeeID)){
-                            System.out.println("-------------------------------------------");
-                            System.out.println(" Employee ID Already exist, enter a different Employee ID");
-                            System.out.println("-------------------------------------------");
-                            EmployeeID=-1;
-                        }
-
-                        // for(int i=0;i<Employee.countEmp;i++){
-                        //    if(emp[i].getId()==EmployeeID){
-                        //     System.out.println("-------------------------------------------");
-                        //     System.out.println(" Employee ID Already exist, enter a different Employee ID");
-                        //     System.out.println("-------------------------------------------");
-                        //     EmployeeID=-1;
-                        //     break;
-                        //    }
-                        // }
+                        EmployeeID =EmployeeReader.EmployeeIdReader();
                     }
-                    }
+            
                     switch(ch2){
                         case 1:
-                        EmployeeMap.Employees.put(EmployeeID,Employee.getEmployee(EmployeeID,Designation.CLERK));
+                        Employee.getEmployee(EmployeeID,Designation.CLERK);
                         break;
                         case 2:
-                        EmployeeMap.Employees.put(EmployeeID,Employee.getEmployee(EmployeeID,Designation.PROGRAMMER));
+                        Employee.getEmployee(EmployeeID,Designation.PROGRAMMER);
                         break;
                         case 3:
-                        EmployeeMap.Employees.put(EmployeeID,Employee.getEmployee(EmployeeID,Designation.MANAGER));
+                        Employee.getEmployee(EmployeeID,Designation.MANAGER);
                         break;
                     }
                 } while(ch2 != 4);
+                  
 
-                case 2:
-                if (EmployeeMap.empCount == 0){
-                    System.out.println("No Employee Present to Display");
-                }
-                Iterator mi = EmployeeMap.Employees.entrySet().iterator();
-
-                while(mi.hasNext()){
-                    Map.Entry me = (Map.Entry)mi.next();
-                    Employee emp=(Employee)me.getValue();
-                    emp.display();  
-                }
                 break;
+                case 2:  // Display
+                   
+                Display.display();
 
-                case 3:
+                break;
+  
+                case 3:    // Raise Salary
                 if (EmployeeMap.empCount == 0){
                     System.out.println("No Employee Present to Raise Salary");
                 }
@@ -122,7 +87,7 @@ public class EmployeeManagementApp
                 }
                 break;
 
-                case 4:
+                case 4:   // Delete
                 System.out.println("-------------------------------------------");
                 System.out.println("Do you really want to delete");
                 int ch3=0;
@@ -153,30 +118,7 @@ public class EmployeeManagementApp
                         System.out.println("Employee ID not found");
                         System.out.println("----------------------------------");
                         }
-                        // boolean found=false;
-                        // for(int i=0;i<;i++){
-                        //     if(emp[i].getId()==idToDelete){
-                        //        found=true;
-                        //        emp[i]=null;
-                             
-                        //        continue;
-                        //     }
-                        //     if(found==true){
-                        //         emp[i-1]=emp[i];
-                        //     }
-                        // }
-                        // if(found==false ){
-                        // System.out.println("----------------------------------");
-                        // System.out.println("Employee ID not found");
-                        // System.out.println("----------------------------------");
-                        //  }
-                        // else {
-                        //     Employee.countEmp--;
-                        //     System.out.println("----------------------------------");
-                        //     System.out.println("Deleted");
-                        //     System.out.println("----------------------------------"); 
-                        // }
-                        // break;
+                    break;
                     case 2 :
 
                        break;
@@ -184,7 +126,12 @@ public class EmployeeManagementApp
                      System.out.println("Enter the valid choice !! ");
                         break;
                   }
-               case 5:
+
+
+                break;
+            
+
+               case 5:  // Search
                 System.out.print("Enter the Employee ID to search ");
                 int idToSearch = sc.nextInt();
                 if(EmployeeMap.Employees.containsKey(idToSearch)){
@@ -196,7 +143,11 @@ public class EmployeeManagementApp
                   System.out.println("Employee ID not found");
                   System.out.println("----------------------------------");
                 }
+
+                break ;
+                
                case 6:
+                
                 break;
             }
         }while(ch1 != 6);
@@ -206,7 +157,15 @@ public class EmployeeManagementApp
 
         
         sc.close();
+    
+
     }
+    finally{
+        FileOperations.save();
+    }
+    }
+
+
     
 
 }
