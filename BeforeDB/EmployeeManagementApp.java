@@ -25,7 +25,7 @@ public class EmployeeManagementApp
        // Employee emp[] = new Employee[100];
         
         FileOperations.readEmployees();
-        if(!EmployeeMap.isCeoPresent){
+        if(EmployeeMap.empCount==0){
             System.out.println("Enter CEO Details : ");
             System.out.println("--------------------------");
             EmployeeMap.Employees.put(1,Employee.getEmployee(1,Designation.CEO));

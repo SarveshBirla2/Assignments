@@ -8,7 +8,7 @@ import employee.assignment.Programmer;
 
 
 
-public abstract class Employee{
+public abstract class Employee implements java.io.Serializable{
 
     private int id ;
     private String name;
