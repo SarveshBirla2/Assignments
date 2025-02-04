@@ -3,20 +3,31 @@ package menuClasses ;
 import java.util.Map;
 import java.sql.*;
 import employee.assignment.utils.Input;
-
+import javax.sql.*;
+import javax.sql.rowset.*;
 public class Appraisal {
     public static void appraisal(){
          String query="SELECT EMP.eid,EMP.salary,EMP.name FROM EMP WHERE eid=?";
          String updateQuery = "UPDATE EMP SET salary = ? WHERE eid = ?";
+         //RowSetFactory rsf= ;
         try(
-          Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/empdb","postgres","tiger");
-          PreparedStatement pstmt = con.prepareStatement(query);
-          PreparedStatement updatepstmt = con.prepareStatement(updateQuery);
-        ){
+            JdbcRowSet rs = RowSetProvider.newFactory().createJdbcRowSet(); 
+            JdbcRowSet rs2=RowSetProvider.newFactory().createJdbcRowSet();
+        ){  
+            rs.setUrl("jdbc:postgresql://localhost:5432/empdb");
+            rs.setUsername("postgres");
+            rs.setPassword("tiger");
+            rs.setCommand(query);
+
+            rs2.setUrl("jdbc:postgresql://localhost:5432/empdb");
+            rs2.setUsername("postgres");
+            rs2.setPassword("tiger");
+            rs2.setCommand(updateQuery);
+
             System.out.print("Enter Employee ID whose salary is to be raised : ");
             int EmpID = Input.intInput();
-            pstmt.setInt(1, EmpID);
-            ResultSet rs =pstmt.executeQuery();
+            rs.setInt(1, EmpID);
+            rs.execute();
             if(rs.next()){
                 System.out.println("---------------------------------------");
                 System.out.println("Employee Name : "+rs.getString(3));
@@ -26,9 +37,9 @@ public class Appraisal {
               System.out.print("Enter the Appraisal Amount : ");
               int increase = Input.intInput();
               int increasedSalary = increase + rs.getInt(2);
-              updatepstmt.setInt(1, increasedSalary);
-              updatepstmt.setInt(2, EmpID);
-              updatepstmt.execute();
+              rs2.setInt(1, increasedSalary);
+              rs2.setInt(2, EmpID);
+              rs2.execute();
             }
             else{
                 System.out.println("--------------------------------");

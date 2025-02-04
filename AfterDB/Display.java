@@ -1,7 +1,7 @@
 package menuClasses;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.*;
+import javax.sql.*;
+import javax.sql.rowset.*;
 import employee.assignment.utils.Menu;
 public class Display {
     public static void display(){
@@ -9,10 +9,15 @@ public class Display {
     int ch = Menu.readChoice(6, menu);
     if(ch==6)return ;
     else {
+       //RowSetFactory rsf= ;
         try(
-          Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/empdb","postgres","tiger");
-          Statement stmt = con.createStatement();
+          
+          JdbcRowSet rs = RowSetProvider.newFactory().createJdbcRowSet(); 
+        
         ){ 
+          rs.setUrl("jdbc:postgresql://localhost:5432/empdb");
+          rs.setUsername("postgres");
+          rs.setPassword("tiger");
         String query ="";
           switch(ch){
             case 1 : 
@@ -33,17 +38,22 @@ public class Display {
             break;
             
           }
-          ResultSet rs= stmt.executeQuery(query);
-          while(rs.next()){
-          System.out.println("------------------------------------------------");
-          System.out.println("EID : "+ rs.getString(1));
-          System.out.println("Name : "+rs.getString(2));
-          System.out.println("Age : "+rs.getString(3));
-          System.out.println("Salary : "+rs.getString(4));
-          System.out.println("Department : "+rs.getString(5));
-          System.out.println("Designation : "+rs.getString(6));
-          System.out.println("------------------------------------------------");
-          }
+          rs.setCommand(query);
+          rs.execute();
+
+          System.out.println("---------------------------------------------------------------");
+          System.out.printf("%-10s %-15s %-5s %-10s %-20s %-15s%n", 
+                  "EID", "Name", "Age", "Salary", "Department", "Designation");
+          System.out.println("---------------------------------------------------------------");
+
+          while (rs.next()){
+                      System.out.printf("%-10s %-15s %-5s %-10s %-15s %-15s%n",
+                      rs.getString(1), rs.getString(2), rs.getString(3),
+                      rs.getString(4), rs.getString(5), rs.getString(6));
+             } 
+
+          System.out.println("---------------------------------------------------------------");
+
         }
         catch(Exception e){
             System.out.println(e);
