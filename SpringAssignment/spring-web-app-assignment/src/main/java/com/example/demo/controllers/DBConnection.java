@@ -1,3 +1,5 @@
+package com.example.demo.controllers;
+
 import java.sql.*;
 
 public class DBConnection {
@@ -9,7 +11,7 @@ private DBConnection(){
 public static Connection getConnection(){
   if(con==null){
     try{
-        con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/empdb","postgres","tiger");
+        con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/bankdb","postgres","tiger");
     }
     catch(Exception e){
         System.out.println(e);
@@ -19,7 +21,7 @@ public static Connection getConnection(){
   return con;
 }
 
- public void close(){
+ public static void close(){
   try{
     con.close();
   }
