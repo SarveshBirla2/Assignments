@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        const loanDetails = {
+            "home-loan": { rate: 9, minTenure: 1, maxTenure: 30, minAmount: 500000, maxAmount: 10000000 },
+            "car-loan": { rate: 11, minTenure: 1, maxTenure: 7, minAmount: 100000, maxAmount: 1500000 },
+            "personal-loan": { rate: 15, minTenure: 1, maxTenure: 5, minAmount: 10000, maxAmount: 500000 },
+        };
+
+        function showForm(formId) {
+            document.getElementById("loan-form").style.display = "none";
+            document.getElementById("deposit-form").style.display = "none";
+            document.getElementById(formId).style.display = "block";
+        }
+
+        function updateLoanDetails() {
+            const loanType = document.getElementById("loan-type").value;
+            document.getElementById("interestRate").value = loanDetails[loanType].rate + "%";
+            document.getElementById("loanAmount").min = loanDetails[loanType].minAmount;
+            document.getElementById("loanAmount").max = loanDetails[loanType].maxAmount;
+            document.getElementById("loanTenure").min = loanDetails[loanType].minTenure;
+            document.getElementById("loanTenure").max = loanDetails[loanType].maxTenure;
+        }
+
+        function calculateEMI() {
+            const amount = parseFloat(document.getElementById("loanAmount").value);
+            const tenure = parseFloat(document.getElementById("loanTenure").value) * 12; 
+            const rate = parseFloat(document.getElementById("interestRate").value) / 1200;
+            
+            if (amount && tenure && rate) {
+                const emi = (amount * rate * Math.pow(1 + rate, tenure)) / (Math.pow(1 + rate, tenure) - 1);
+                document.getElementById("emiResult").innerHTML = "Monthly EMI: Rs. " + emi.toFixed(2);
+                document.getElementById("emiResult").style.display = "block";
+            } else {
+                document.getElementById("emiResult").innerHTML = "Please enter valid details";
+
+            }
+        }
+
+        function calculateFD() {
+            const principal = parseFloat(document.querySelector("#deposit-form input[type='number']").value);
+            const time = parseFloat(document.querySelector("#deposit-form input:nth-of-type(2)").value);
+            const rate = 7 / 100;
+            
+            if (principal && time) {
+                const maturityAmount = principal * Math.pow((1 + rate), time);
+                document.getElementById("maturity-result").innerHTML = "Maturity Amount: Rs. " + maturityAmount.toFixed(2);
+                document.getElementById("maturity-result").style.display = "block";
+                
+            } else {
+                document.getElementById("maturity-result").innerHTML = "Please enter valid details";
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="header">
+        <div>Our Banking</div>
+        <div class="shift-right"><i>~Banking at your doorstep</i></div>
+    </div>
+
+    <div class="container">
+        <nav class="sidebar">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="services.html">Services</a>
+            <a href="netbanking.html">Netbanking</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+
+        <div class="content">
+            <h2>Our Services</h2>
+            <div class="services">
+                <div class="service-box" onClick="showForm('loan-form')">
+                    <h3>Loan EMI Calculator</h3>
+                    <p>Calculate your monthly EMI easily with our loan calculator.</p>
+                </div>
+                <div class="service-box" onClick="showForm('deposit-form')">
+                    <h3>Fixed Deposit Calculator</h3>
+                    <p>Find out how much your deposit will grow over time.</p>
+                </div>
+            </div>
+
+            <div id="loan-form" class="form-container" style="display: none;">
+                <h2>Loan EMI Calculator</h2>
+                <form onsubmit="event.preventDefault(); calculateEMI();">
+                    <label>Applicant Name :</label>
+                    <input type="text" required>
+                    <label>Type</label>
+                    <select id="loan-type" onChange="updateLoanDetails()">
+                        <option value="">--SELECT--</option>
+                        <option value="home-loan">Home Loan</option>
+                        <option value="car-loan">Car Loan</option>
+                        <option value="personal-loan">Personal Loan</option>
+                    </select>
+                    <label for="interestRate">Interest Rate (%):</label>
+                    <input type="text" id="interestRate" readonly>
+                    <label>Loan Tenure (Years):</label>
+                    <input type="number" id="loanTenure" min="1" max="30" required>
+                    <label for="loanAmount">Loan Amount:</label>
+                    <input type="number" id="loanAmount" min="500000" max="10000000" required>
+                    <input type="submit" value="Calculate">
+                </form>
+                <div id="emiResult" class="result-box">
+                    Your EMI: <span id="emi-amount"></span>
+                    
+                </div>
+            </div>
+
+            <div id="deposit-form" class="form-container" style="display: none;">
+                <h2>Fixed Deposit Calculator</h2>
+                <form onsubmit="event.preventDefault(); calculateFD();">
+                    <label>Principal Amount:</label>
+                    <input type="number" required min="0">
+                    <label>Time Period (Years):</label>
+                    <input type="number" required min="0" max="10">
+                    <label>Interest Rate (Annual %):</label>
+                    <input type="text" value="7%" readonly>
+                    <input type="submit" value="Calculate">
+                </form>
+                <div id="maturity-result" class="result-box">
+                    Maturity Amount: <span id="maturity-amount"></span>
+                </div> 
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div>Footer</div>
+        <div><i>&copy Copyright reserved by Wissen Technology</i></div>
+    </div>
+</body>
+</html>
